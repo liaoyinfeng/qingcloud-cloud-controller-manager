@@ -10,17 +10,17 @@ pipeline {
       script: 'git rev-parse --short HEAD',
       returnStdout: true
     ).trim()
-    ACCESS_KEY_ID     = credentials('jenkins-qc-secret-key-id')
-    SECRET_ACCESS_KEY = credentials('jenkins-qc-secret-access-key')
+#    ACCESS_KEY_ID     = credentials('jenkins-qc-secret-key-id')
+#    SECRET_ACCESS_KEY = credentials('jenkins-qc-secret-access-key')
     IMG =  "magicsong/cloud-manager:$tag"
-    API_OWNER = "usr-MRiIUq7M"
-    KUBECONFIG = "/root/.kube/config"
+#    API_OWNER = "usr-MRiIUq7M"
+    KUBECONFIG = 'kubeconfig-demo'
   }
   stages {
     stage('set kubeconfig and secret'){
      steps{
         sh 'mkdir -p ~/.kube'
-        withCredentials([kubeconfigContent(credentialsId: 'lbkubeconfig', variable: 'KUBECONFIG_CONTENT')]) {
+        withCredentials([kubeconfigContent(credentialsId: 'kubeconfig-demo', variable: 'KUBECONFIG_CONTENT')]) {
            sh 'echo "$KUBECONFIG_CONTENT" > ~/.kube/config'
         }
       }
